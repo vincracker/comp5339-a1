@@ -1,0 +1,10 @@
+This directory holds datasets exactly as downloaded. It is IMMUTABLE.
+
+Never edit a file in here by hand. Everything downstream (data/interim, data/processed)
+must be regenerated from these files by script. That is what makes the "fully reproducible"
+requirement true rather than aspirational, and it stops four people corrupting each
+other's inputs.
+
+Contents are gitignored -- they are re-fetched by src/acquire/.
+
+This file exists only because git does not track empty directories.

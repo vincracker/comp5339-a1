@@ -1,0 +1,5 @@
+Tests, if the group writes any. Not a stated deliverable, but a few checks on the
+fiddly parts pay for themselves -- the augmentation matching logic and the SA4
+join are the two places a silent wrong answer is most likely.
+
+This file exists only because git does not track empty directories.

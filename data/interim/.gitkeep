@@ -1,0 +1,7 @@
+Handoffs between pipeline stages: B's cleaned chargers, C's SA4-joined output,
+D's augmented output.
+
+Contents are gitignored and disposable -- delete the lot and re-run, and you get
+identical results. Nothing here goes in the submission; that is data/processed/.
+
+This file exists only because git does not track empty directories.

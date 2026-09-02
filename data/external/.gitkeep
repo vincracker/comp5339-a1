@@ -1,0 +1,9 @@
+Cached responses from the data-augmentation source (Task 3), in CSV.
+
+This directory IS committed to git, unlike the other data/ directories. Two reasons:
+  1. The assignment asks for a local copy, since "repeated retrieval may be
+     time-consuming and subject to API limits".
+  2. It lets the rest of the group build against real augmented data without
+     needing their own API credentials.
+
+This file exists only because git does not track empty directories.

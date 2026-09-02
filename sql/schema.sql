@@ -1,0 +1,29 @@
+-- COMP5339 Assignment 1 -- database schema (DDL)
+-- Owner: D. Assignment Task 4.
+--
+-- This file is a NAMED DELIVERABLE: "Provide SQL DDL scripts that recreate your
+-- schema." Keep the DDL here as a first-class file rather than embedded in
+-- Python strings -- a marker will open this file directly.
+--
+-- src/db/load.py should read and execute this file, not carry its own copy.
+--
+-- TODO(D):
+--   [ ] Design the schema. The assignment requires it to support efficient
+--       storage and querying of:
+--         - charger locations
+--         - operators
+--         - charger characteristics
+--         - geographic regions (SA4)
+--   [ ] Decide normalised vs denormalised. The assignment says to "clearly
+--       justify your database design decisions" in the report, so whichever
+--       you pick, write down why. There is no single right answer -- the marks
+--       are in the reasoning, and in it matching the queries Assignment 2 will
+--       need.
+--   [ ] Use a geometry type for charger locations so the spatial extension can
+--       query them in Assignment 2. Storing lat/lon as two plain numbers will
+--       work now and hurt later.
+--   [ ] Declare keys and constraints explicitly -- they document the model as
+--       much as they enforce it.
+--   [ ] Draw the schema diagram for the report from this file, so the two
+--       cannot drift apart.
+--   [ ] Verify this script recreates the schema from empty, on its own.

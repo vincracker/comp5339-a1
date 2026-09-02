@@ -1,0 +1,8 @@
+Final output: the .duckdb database, plus the processed CSVs if the group takes
+the CSV fallback option.
+
+This is what goes in the submission zip. Contents are gitignored (the .duckdb is
+rebuilt by src/db/load.py), so add the database file to the zip by hand -- do not
+rely on git to carry it.
+
+This file exists only because git does not track empty directories.
