@@ -33,3 +33,8 @@ data/processed/*
 # NOTE: uv.lock IS committed -- it pins exact versions for the group's own
 # environment. requirements.txt is the separate, exported deliverable that must
 # install under plain `venv` + `pip`.
+
+# Safety net: notebooks must resolve data/ from the repo root, never write it
+# alongside themselves. The rules above are anchored to the repo root, so they
+# would not catch a stray copy here.
+notebooks/data/

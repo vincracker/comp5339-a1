@@ -71,10 +71,15 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-TODO(A): `requirements.txt` is **generated** from the project, never hand-edited -- regenerate
-it whenever a dependency changes. Work out the right uv command (`uv export` /
-`uv pip compile`) and prefer output **without hashes**, which plain pip installs more
-forgivingly. Record the command here so anyone can reproduce it.
+`requirements.txt` is **generated**, never hand-edited. Regenerate it whenever a dependency
+changes:
+
+```
+uv export --no-hashes --no-dev --format requirements-txt -o requirements.txt
+```
+
+`--no-hashes` matters: hash-pinned output makes plain `pip` far fussier. Verified to install
+and run the pipeline in a clean `python3 -m venv` with stdlib pip only.
 
 TODO(A): credentials -- copy `.env.example` to `.env`, then say which values each member
 needs and where to obtain them. Neither `.env` nor real keys are ever committed.
