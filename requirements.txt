@@ -45,6 +45,8 @@ debugpy==1.8.21
     # via ipykernel
 defusedxml==0.7.1
     # via nbconvert
+duckdb==1.5.5
+    # via code
 executing==2.2.1
     # via stack-data
 fastjsonschema==2.22.2

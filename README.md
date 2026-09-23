@@ -116,6 +116,14 @@ files -- that is what the reproducibility requirement is judged on.
 Note the augmentation stage reads from the `data/external/` cache by default, so a rerun does
 not re-hit the API. Refetching is an explicit opt-in.
 
+### Task 4: transformation and DuckDB storage
+
+Run [`notebooks/data_transformation_and_storage.ipynb`](notebooks/data_transformation_and_storage.ipynb)
+from top to bottom. It reads the augmented CSV and cached SA4 boundaries, executes
+[`sql/schema.sql`](sql/schema.sql), and writes `data/processed/ev_chargers.duckdb`.
+The notebook includes the design rationale and validation. The first run downloads
+the spatial extension. Include the gitignored database in the submission ZIP.
+
 ## Assumptions
 
 TODO(all): assumptions and their justification. For example: how a charger is uniquely
