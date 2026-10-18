@@ -1,4 +1,5 @@
--- Task 4: execute against an empty DuckDB database.
+-- Task 4: execute against an empty DuckDB database after registering the
+-- dc_data and cleaned_data CSV relations used by the temporary loading views.
 -- First installation needs internet; LOAD spatial is required per connection.
 INSTALL spatial FROM 'https://extensions.duckdb.org';
 LOAD spatial;
@@ -71,7 +72,7 @@ CREATE TABLE charger (
     lga_name VARCHAR,
     postcode VARCHAR,
     source_program VARCHAR,
-    charger_type VARCHAR NOT NULL CHECK (charger_type = 'DC'),
+    charger_type VARCHAR NOT NULL CHECK (charger_type IN ('AC', 'DC', 'Upcoming')),
     number_of_plugs INTEGER CHECK (number_of_plugs > 0),
     rating_text VARCHAR,
     rating_kw DOUBLE CHECK (isfinite(rating_kw) AND rating_kw > 0),
@@ -88,7 +89,15 @@ CREATE TABLE charger (
     match_distance_m DOUBLE CHECK (isfinite(match_distance_m) AND match_distance_m >= 0),
     match_is_ambiguous BOOLEAN NOT NULL,
     raw_record JSON NOT NULL, -- All original CSV fields, including quality flags.
-    CHECK ((sa4_match_count = 1) = (sa4_code IS NOT NULL)),
+    sa4_assignment_method VARCHAR NOT NULL,
+    sa4_distance_m DOUBLE CHECK (isfinite(sa4_distance_m) AND sa4_distance_m BETWEEN 0 AND 10),
+    CHECK (
+        (sa4_match_count = 1 AND sa4_code IS NOT NULL AND sa4_assignment_method = 'covers'
+         AND sa4_distance_m IS NOT NULL AND sa4_distance_m = 0)
+        OR (sa4_match_count = 0 AND sa4_code IS NOT NULL AND sa4_assignment_method = 'nearest'
+            AND sa4_distance_m IS NOT NULL)
+        OR (sa4_match_count <> 1 AND sa4_code IS NULL AND sa4_assignment_method = 'unassigned'
+            AND sa4_distance_m IS NULL)),
     CHECK (matched = (external_station_id IS NOT NULL))
 );
 
@@ -112,3 +121,20 @@ SELECT c.charger_record_id, c.external_station_id, t.connector_id, t.connector_n
 FROM charger c
 JOIN external_station_connector ec USING (external_station_id)
 JOIN connector_type t USING (connector_id);
+
+-- Temporary loading views over the CSV relations registered by the notebook.
+CREATE TEMP VIEW csv_data AS
+SELECT * FROM dc_data
+UNION ALL BY NAME
+SELECT *, 'none' AS match_source, 'not_augmented' AS match_method,
+       false AS matched, false AS match_is_ambiguous
+FROM cleaned_data
+WHERE Charger_Type <> 'DC' AND duplicate_status <> 'superseded';
+
+CREATE TEMP VIEW staged AS
+SELECT d.*, to_json(d) AS source_row,
+       CASE match_source
+         WHEN 'ocm' THEN 'ocm:' || (NULLIF(ocm_id, '')::BIGINT)::VARCHAR
+         WHEN 'osm' THEN 'osm:' || (NULLIF(osm_id, '')::BIGINT)::VARCHAR END
+       AS external_station_id
+FROM csv_data d;
